@@ -11,5 +11,5 @@ interface PagesRepositoriesInterface
 
     public function update($pageId, $pageData);
 
-    public function delete($pageId);
+    public function destroy($pageId);
 }

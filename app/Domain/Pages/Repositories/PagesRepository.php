@@ -5,7 +5,6 @@ namespace App\Domain\Pages\Repositories;
 use App\Domain\Core\Traits\ContentTrait;
 use App\Domain\Pages\Contracts\PagesRepositoriesInterface;
 use App\Domain\Pages\Models\Page;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 
@@ -19,6 +18,11 @@ class PagesRepository implements PagesRepositoriesInterface
         $this->pageModel = $pageModel;
     }
 
+    /**
+     * Retrieve all pages.
+     *
+     * @return array|false
+     */
     public function all()
     {
         try {
@@ -28,10 +32,16 @@ class PagesRepository implements PagesRepositoriesInterface
             Log::error('Failed to fetch all pages: ' . $e->getMessage());
 
             // Return an error response
-            return ['error' => 'Failed to fetch all pages'];
+            return null;
         }
     }
 
+    /**
+     * Create a new page.
+     *
+     * @param  array  $pageData
+     * @return array
+     */
     public function create($pageData)
     {
         try {
@@ -43,10 +53,17 @@ class PagesRepository implements PagesRepositoriesInterface
             return $this->pageModel->create($pageData);
         } catch(Exception $e) {
             Log::error('Failed to create a new page: '. $e->getMessage());
-            return ['error' => 'Failed to create a new page :'. $e->getMessage()];
+
+            return null;
         }
     }
 
+    /**
+     * Find a page by ID.
+     *
+     * @param  int  $pageId
+     * @return Page|null
+     */
     public function find($pageId)
     {
         try {
@@ -58,6 +75,13 @@ class PagesRepository implements PagesRepositoriesInterface
         }
     }
 
+    /**
+     * Update a page.
+     *
+     * @param  int  $pageId
+     * @param  array  $pageData
+     * @return Page|null
+     */
     public function update($pageId, $pageData)
     {
         try {
@@ -65,6 +89,10 @@ class PagesRepository implements PagesRepositoriesInterface
 
             if(!$page){
                 return null;
+            }
+
+            if(empty($pageData['slug'])){
+                $pageData['slug'] = $this->generateUniqueSlug($pageData['title']);
             }
 
             $page->fill($pageData);
@@ -78,7 +106,13 @@ class PagesRepository implements PagesRepositoriesInterface
         }
     }
 
-    public function delete($pageId)
+    /**
+     * Delete a page.
+     *
+     * @param  int  $pageId
+     * @return bool
+     */
+    public function destroy($pageId)
     {
         try {
             $page = $this->pageModel->find($pageId);

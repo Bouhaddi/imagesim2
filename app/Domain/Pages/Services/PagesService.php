@@ -4,7 +4,7 @@ namespace App\Domain\Pages\Services;
 
 use App\Domain\Pages\Contracts\PagesRepositoriesInterface;
 
-class PagesServices
+class PagesService
 {
     protected PagesRepositoriesInterface $pageRepository;
 
@@ -60,7 +60,7 @@ class PagesServices
      */
     public function deletePage($pageId)
     {
-        return $this->pageRepository->delete($pageId);
+        return $this->pageRepository->destroy($pageId);
     }
 
 
