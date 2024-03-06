@@ -22,10 +22,10 @@ class SectionsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string',
-            'type' => 'string',
+            'name' => 'required|string',
+            'type' => 'required|string',
             'order' => 'integer',
-            'is_active' => 'integer|min:0|max:1'
+            'is_active' => 'required|integer|min:0|max:1'
         ];
     }
 }
