@@ -3,16 +3,16 @@
 namespace App\Domain\Pages\Controllers;
 
 use App\Domain\Pages\Requests\PageRequest;
-use App\Domain\Pages\Services\PagesServices;
+use App\Domain\Pages\Services\PagesService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
 class PagesController extends Controller
 {
-    public PagesServices $pageService;
+    public PagesService $pageService;
 
-    public function __construct(PagesServices $pageService)
+    public function __construct(PagesService $pageService)
     {
         $this->pageService = $pageService;
     }
@@ -39,7 +39,7 @@ class PagesController extends Controller
     {
         $newPage = $this->pageService->createPage($request->all());
 
-        if(isset($newPage['error'])){
+        if(!$newPage){
             return response()->json(["error" => "Failed to create a new page"], 422);
         }
 
@@ -57,7 +57,7 @@ class PagesController extends Controller
         $page = $this->pageService->findPage($pageId);
 
         if(!$page){
-            return response()->json(["error", "Page not Found"], 404);
+            return response()->json(["error" => "Page not Found"], 404);
         }
 
         return response()->json($page);
