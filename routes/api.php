@@ -28,6 +28,7 @@ try{
 Route::resource('pages', \App\Domain\Pages\Controllers\PagesController::class);
 Route::resource('posts', \App\Domain\Posts\Controllers\PostsController::class);
 Route::resource('sections', \App\Domain\Sections\Controllers\SectionsController::class);
+Route::resource('categories', \App\Domain\Categories\Controllers\CategoriesController::class);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

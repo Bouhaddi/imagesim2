@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Domain\Categories\Contracts\CategoriesRepositoryInterface;
+use App\Domain\Categories\Repositories\CategoriesRepository;
 use App\Domain\Posts\Contracts\PostsRepositoryInterface;
 use App\Domain\Posts\Repositories\PostsRepository;
 use App\Domain\Pages\Contracts\PagesRepositoriesInterface;
@@ -25,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Admin Service Provider for Sections feature
         $this->app->bind(SectionsRepositoryInterface::class, SectionsRepository::class);
+
+        // Admin Service Provider for Categories feature
+        $this->app->bind(CategoriesRepositoryInterface::class, CategoriesRepository::class);
     }
 
     /**
